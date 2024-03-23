@@ -1,43 +1,29 @@
 import json
+import boto3
 
-# Datastore
-title = "Quiz for Day 11: Logging and Monitoring in AWS"
-questions = [
-  {
-    "question": "",
-    "type": "multiple_choice",
-    "options": []
-  },
-  {
-    "question": "",
-    "type": "multiple_choice",
-    "options": []
-  },
-  {
-    "question": "",
-    "type": "multiple_choice",
-    "options": []
-  },
-  {
-    "question": "",
-    "type": "multiple_choice",
-    "options": []
-  },
-]
-all_quizzes = {
-  '1': {
-    "title": title,
-    "questions": questions
-  }
-}
+table_name = 'quizzes'
+
+# Format of Question: question_id, question, type (MCQ, FillUp), options
 
 def lambda_handler(event, context):
+  quiz_id = event["quiz_id"]
+  questions = []
 
-  quiz_id = event['quiz_id']
-  quiz_details = all_quizzes[quiz_id]
+  dynamodb = boto3.resource("dynamodb")
+  table = dynamodb.Table(table_name)
+
+  response = table.get_item(Key={"id": quiz_id})
+  if "Item" in response:
+      questions = response["Item"]["questions"]
+      title = response["Item"]["title"]
+
+  quiz_details = {
+     'title': title,
+     'questions': questions
+  }
   return {
         "statusCode": 200,
         "body": quiz_details
   }
 
-print(lambda_handler({}, {}))
+print(lambda_handler({'quiz_id': "1", "title": "Day 0 - Introduction to AWS"}, {}))

@@ -1,23 +1,23 @@
-# Data Store
-quizzes = [
-  {
-    "id": "1",
-    "title": "Quiz for Day 11: Logging and Monitoring in AWS"
-  },
-  {
-    "id": "2",
-    "title": "Quiz for Day 10: Costs in AWS"
-  },
-  {
-    "id": "3",
-    "title": "Quiz for Day 9: Hosting static site using AWS CloudFront"
-  },
-]
+import boto3
+
+table_name = 'quizzes'
+
+def scan_table(dynamo_client, *, TableName, **kwargs):
+    paginator = dynamo_client.get_paginator("scan")
+
+    for page in paginator.paginate(TableName=TableName, **kwargs):
+        yield from page["Items"]
 
 def lambda_handler(event, context):
+  quizzes = []
+  dynamo_client = boto3.client("dynamodb")
+  for item in scan_table(dynamo_client, TableName=table_name):
+      parsed_item = {"title": item['name']['S'], "id": item.get('id', {}).get('S', -1)}
+      quizzes.append(parsed_item)
+
   return {
-        "statusCode": 200,
-        "body": {"quizzes": quizzes}
+    "statusCode": 200,
+    "body": {"quizzes": quizzes}
   }
 
 print(lambda_handler({}, {}))
