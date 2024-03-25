@@ -12,7 +12,7 @@ def lambda_handler(event, context):
   quizzes = []
   dynamo_client = boto3.client("dynamodb")
   for item in scan_table(dynamo_client, TableName=table_name):
-      parsed_item = {"title": item['name']['S'], "id": item.get('id', {}).get('S', -1)}
+      parsed_item = {"title": item['title']['S'], "id": item.get('id', {}).get('S', -1), "noOfQuestions": item['noOfQuestions']['N'], "difficultyLevel": item['difficultyLevel']['S'], "imageURL": item['imageURL']['S']}
       quizzes.append(parsed_item)
 
   return {

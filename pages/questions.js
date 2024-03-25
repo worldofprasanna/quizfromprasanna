@@ -2,7 +2,6 @@ import Link from "next/link";
 import Header from "../components/Header";
 import SideNav from "../components/SideNav";
 import Quiz from "../components/Quiz";
-import AllQuizzes from "../components/AllQuizzes";
 
 const Home = () => {
   return (
@@ -21,7 +20,7 @@ const Home = () => {
           <hr className="mt-5" />
           <div className="flex justify-center items-center mt-5">
             <div className="justify-center">
-              <AllQuizzes />
+              <Quiz />
             </div>
           </div>
         </section>
