@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Loader from "./Loader";
 
 const AllQuizzes = () => {
   const [quizzes, setQuizzes] = useState([]);
@@ -71,6 +72,7 @@ const AllQuizzes = () => {
               List of All Quizzes
             </h2>
           </div>
+          {loading && <Loader />}
 
           <ul className="mt-6 space-y-4">
             {quizzes.map((quiz) => (

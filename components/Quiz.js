@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import QuestionView from "./QuestionView";
 import ResultView from "./ResultView";
 import { useSession } from "next-auth/react";
+import Loader from "./Loader";
 
 const Quiz = () => {
   const [loading, setLoading] = useState(false);
@@ -70,9 +71,9 @@ const Quiz = () => {
         }
       );
       const data = await res.json();
-      console.log(data);
-      setScore("3");
-      setPercentage("67");
+      console.log("score result", data);
+      setScore(data["body"]["score"]);
+      setPercentage(data["body"]["percentage"]);
       setLoading(false);
     } catch (err) {
       console.log(err);
@@ -83,14 +84,15 @@ const Quiz = () => {
 
   return (
     <div className="mt-8 ">
-      {showQuestionsView && (
+      {loading && <Loader />}
+      {!loading && showQuestionsView && (
         <QuestionView
           title={title}
           questions={questions}
           computeResult={(answers) => computeResult(answers)}
         />
       )}
-      {showResultView && (
+      {!loading && showResultView && (
         <ResultView
           score={score}
           percentage={percentage}
