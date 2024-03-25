@@ -7,31 +7,37 @@ import { useSession } from "next-auth/react";
 const AllQuizzes = () => {
   const [quizzes, setQuizzes] = useState([]);
   const session = useSession();
+  const router = useRouter();
   const serverURL = process.env.NEXT_PUBLIC_SERVER_URL;
 
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchQuizzes = async () => {
-      const idToken = session?.data?.idToken;
-      console.log("Session Info", session, idToken);
-      setLoading(true);
-      try {
-        const res = await fetch(`${serverURL}/`, {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: idToken,
-          },
-        });
-        const data = await res.json();
-        setQuizzes(data["body"]["quizzes"]);
-        setLoading(false);
-      } catch (err) {
-        console.log(err);
-        // alert("Error occurred while fetching data. Check console.");
-        setLoading(false);
+      console.log("session in all quizzes", session);
+      if (session === null || session.data === null) {
+        router.push("/login");
+      } else {
+        const idToken = session?.data?.idToken;
+        console.log("Session Info", session, idToken);
+        setLoading(true);
+        try {
+          const res = await fetch(`${serverURL}/`, {
+            method: "GET",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+              Authorization: idToken,
+            },
+          });
+          const data = await res.json();
+          setQuizzes(data["body"]["quizzes"]);
+          setLoading(false);
+        } catch (err) {
+          console.log(err);
+          // alert("Error occurred while fetching data. Check console.");
+          setLoading(false);
+        }
       }
     };
 
