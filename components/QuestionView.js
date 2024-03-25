@@ -55,7 +55,7 @@ const QuestionView = ({ title, questions, computeResult }) => {
                   Quiz for {title}
                 </label>
                 {questions.map((question) => (
-                  <div className="mt-2 pt-12">
+                  <div className="mt-2 pt-12" key={question.question_id}>
                     <div class="px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
                       <div class="max-w-sm mx-auto">
                         <p class="text-md font-bold text-gray-900">
