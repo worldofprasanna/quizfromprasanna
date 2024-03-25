@@ -6,9 +6,7 @@ const InitialPage = () => {
   const session = useSession();
   console.log("Session", session.status);
   console.log("Auth Session Token", session);
-  return (
-    <div>{session.status === "unauthenticated" ? <Login /> : <Home />}</div>
-  );
+  return <div>{session.status === "authenticated" ? <Home /> : <Login />}</div>;
 };
 
 export default InitialPage;

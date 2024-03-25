@@ -1,7 +1,5 @@
-import Link from "next/link";
 import Header from "../components/Header";
 import SideNav from "../components/SideNav";
-import Quiz from "../components/Quiz";
 import AllQuizzes from "../components/AllQuizzes";
 
 const Home = () => {

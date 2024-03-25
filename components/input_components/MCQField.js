@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-const MCQField = ({ inputValues, onSubmit }) => {
+const MCQField = ({ questionId, inputValues, onSubmit }) => {
   console.log("Input Values", inputValues);
   const [selectedValues, setSelectedValues] = useState([]);
 
@@ -28,7 +28,10 @@ const MCQField = ({ inputValues, onSubmit }) => {
     <div class="mt-6 space-y-3">
       {inputValues != null &&
         inputValues.map((option) => (
-          <div className="relative flex items-center" key={option}>
+          <div
+            className="relative flex items-center"
+            key={`${questionId}+${option}`}
+          >
             <div className="flex items-center h-5">
               <input
                 type="checkbox"

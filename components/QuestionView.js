@@ -23,6 +23,7 @@ const QuestionView = ({ title, questions, computeResult }) => {
       return (
         <MCQField
           inputValues={options}
+          questionId={question_id}
           onSubmit={(answer) => saveAnswer(question_id, answer)}
         />
       );
@@ -33,6 +34,7 @@ const QuestionView = ({ title, questions, computeResult }) => {
     } else if (type === "ChooseOne") {
       return (
         <RadioInputField
+          questionId={question_id}
           inputValues={options}
           onSubmit={(answer) => saveAnswer(question_id, answer)}
         />
