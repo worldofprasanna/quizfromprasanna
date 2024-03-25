@@ -2,21 +2,31 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Loader from "./Loader";
+import { useSession } from "next-auth/react";
 
 const AllQuizzes = () => {
   const [quizzes, setQuizzes] = useState([]);
+  const session = useSession();
+  const idToken = session?.data?.idToken;
+  console.log("Session Info", session, idToken);
   const fetchQuizzes = async () => {
+    const serverURL = process.env.NEXT_PUBLIC_SERVER_URL;
     setLoading(true);
     try {
-      const res = await fetch(
-        `https://zdyqvvzcpi.execute-api.ap-south-1.amazonaws.com/v1`
-      );
+      const res = await fetch(`${serverURL}/`, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: idToken,
+        },
+      });
       const data = await res.json();
-      console.log(data);
       setQuizzes(data["body"]["quizzes"]);
       setLoading(false);
     } catch (err) {
       console.log(err);
+      // alert("Error occurred while fetching data. Check console.");
       setLoading(false);
     }
   };
@@ -79,6 +89,7 @@ const AllQuizzes = () => {
               <li
                 className="bg-white border border-gray-200 divide-y divide-gray-200 rounded-xl min-w-80 hover:cursor-pointer"
                 onClick={() => goToParticularQuiz(quiz.id)}
+                key={quiz.id}
               >
                 <div className="px-5 py-4">
                   <div className="flex items-start justify-between">

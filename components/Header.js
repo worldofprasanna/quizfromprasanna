@@ -9,6 +9,9 @@ const Header = ({ title }) => {
   const router = useRouter();
   const user = session?.data?.user;
   console.log("User", user?.email);
+  // const actualSession = await getSession();
+  // console.log("atual session", actualSession);
+  // console.log("SEssion Token", getToken);
 
   return (
     <header className="pt-4 bg-white" x-data="{expanded: false}">
