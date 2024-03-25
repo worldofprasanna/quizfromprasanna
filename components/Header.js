@@ -1,27 +1,14 @@
 import React from "react";
-import {
-  useSession,
-  useSupabaseClient,
-  useUser,
-} from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import logo from "../public/logo.svg";
+import { useSession } from "next-auth/react";
 
 const Header = ({ title }) => {
   const session = useSession();
-  const supabase = useSupabaseClient();
   const router = useRouter();
-  const user = useUser();
-  console.log("User", user);
-
-  const logout = (e) => {
-    e.preventDefault();
-    if (session) {
-      supabase.auth.signOut();
-    }
-    router.replace("/");
-  };
+  const user = session?.data?.user;
+  console.log("User", user?.email);
 
   return (
     <header className="pt-4 bg-white" x-data="{expanded: false}">
@@ -42,13 +29,8 @@ const Header = ({ title }) => {
             <hr className="bg-slate-200" />
           </div>
           <nav className="hidden lg:flex lg:items-center lg:justify-end lg:space-x-5">
-            <img
-              className="flex-shrink-0 object-cover rounded-full w-9 h-9"
-              src={user?.user_metadata.avatar_url}
-              alt=""
-            />
             <div className="h-9 text-md mt-2 font-medium text-gray-500">
-              {user?.user_metadata?.user_name}
+              Welcome, {user?.email}
             </div>
             {/* <a
               title=""

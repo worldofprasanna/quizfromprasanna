@@ -1,25 +1,21 @@
 import React from "react";
-// import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
 const SideNav = ({ selectedTab, children }) => {
   const session = useSession();
-  // const supabase = useSupabaseClient();
   const router = useRouter();
 
   const logout = (e) => {
     e.preventDefault();
     if (session) {
-      // supabase.auth.signOut();
       signOut();
     }
     router.replace("/");
   };
 
   const highlightTab = (option) => {
-    // console.log('option', option, selectedTab)
     if (option == selectedTab) {
       return "bg-gray-200";
     } else {
